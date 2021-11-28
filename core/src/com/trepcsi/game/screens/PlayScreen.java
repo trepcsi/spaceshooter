@@ -11,12 +11,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trepcsi.game.SpaceShooter;
+import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
 
 public class PlayScreen implements Screen {
 
     private SpaceShooter game;
     private SpaceShip player;
+    private Meteor meteor;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -33,6 +35,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
         player = new SpaceShip(this);
+        meteor = new Meteor(this);
     }
 
     @Override
@@ -54,6 +57,7 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2); //read more
 
         player.update(dt);
+        meteor.update(dt);
     }
 
     private void handleInput(float dt) {
@@ -66,7 +70,7 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.turn(false);
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.shoot();
         }
     }

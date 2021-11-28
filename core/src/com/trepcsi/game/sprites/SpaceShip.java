@@ -33,7 +33,10 @@ public class SpaceShip extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(40 / SpaceShooter.PPM);
         fdef.shape = shape;
+        fdef.filter.categoryBits = SpaceShooter.PLAYER_BIT;
+        fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
         body.createFixture(fdef).setUserData(this);
+
     }
 
     public void update(float dt) {

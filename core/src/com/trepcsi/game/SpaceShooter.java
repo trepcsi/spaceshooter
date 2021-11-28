@@ -11,6 +11,10 @@ public class SpaceShooter extends Game {
 
     public SpriteBatch batch;  //only 1 batch allowed in the whole game
 
+    public static final short PLAYER_BIT = 1;
+    public static final short BULLET_BIT = 2;
+    public static final short METEOR_BIT = 4;
+
     @Override
     public void create() {
         batch = new SpriteBatch();

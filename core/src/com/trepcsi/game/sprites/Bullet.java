@@ -37,6 +37,8 @@ public class Bullet extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / SpaceShooter.PPM);
         fdef.shape = shape;
+        fdef.filter.categoryBits = SpaceShooter.BULLET_BIT;
+        fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
         body.createFixture(fdef).setUserData(this);
         body.setLinearVelocity(new Vector2(dir.x * 5.f, dir.y * 5.f));
     }
