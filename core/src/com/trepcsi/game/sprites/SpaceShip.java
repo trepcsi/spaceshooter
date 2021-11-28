@@ -67,10 +67,11 @@ public class SpaceShip extends Sprite {
 
     public void shoot() {
         float alpha = body.getAngle();
-        float velX = MathUtils.cos(alpha) * 2f;
-        float velY = MathUtils.sin(alpha) * 2f;
+        float velX = MathUtils.cos(alpha);
+        float velY = MathUtils.sin(alpha);
         Vector2 dir = new Vector2(velX, velY);
 
-        Bullet bullet = new Bullet(screen, body.getPosition(), dir);
+        Bullet bulletLeft = new Bullet(screen, body.getPosition(), dir, true);
+        Bullet bulletRight = new Bullet(screen, body.getPosition(), dir, false);
     }
 }
