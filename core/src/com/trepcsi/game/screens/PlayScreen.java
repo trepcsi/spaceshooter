@@ -1,6 +1,7 @@
 package com.trepcsi.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,7 +30,7 @@ public class PlayScreen implements Screen {
         viewport = new FitViewport(SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM, camera);  //need to scale after b2d
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, 0), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
         player = new SpaceShip(this);
     }
@@ -48,8 +49,24 @@ public class PlayScreen implements Screen {
     }
 
     private void update(float dt) {
+        handleInput(dt);
+
         world.step(1 / 60f, 6, 2); //read more
+
         player.update(dt);
+    }
+
+    private void handleInput(float dt) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            player.moveForward();
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            player.turn(true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.turn(false);
+        }
     }
 
     public World getWorld() {
