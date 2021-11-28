@@ -60,12 +60,14 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.moveForward();
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.turn(true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.turn(false);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            player.shoot();
         }
     }
 

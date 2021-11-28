@@ -11,7 +11,7 @@ import static java.lang.Math.sqrt;
 
 public class SpaceShip extends Sprite {
 
-    private SpaceShooter game;
+    private PlayScreen screen;
 
     //Box2d variables
     private World world;
@@ -19,6 +19,7 @@ public class SpaceShip extends Sprite {
 
     public SpaceShip(PlayScreen screen) {
         this.world = screen.getWorld();
+        this.screen = screen;
         defineSpaceShip();
     }
 
@@ -62,5 +63,14 @@ public class SpaceShip extends Sprite {
         }
         body.setLinearVelocity(new Vector2(0, 0));
         moveForward();
+    }
+
+    public void shoot() {
+        float alpha = body.getAngle();
+        float velX = MathUtils.cos(alpha) * 2f;
+        float velY = MathUtils.sin(alpha) * 2f;
+        Vector2 dir = new Vector2(velX, velY);
+
+        Bullet bullet = new Bullet(screen, body.getPosition(), dir);
     }
 }
