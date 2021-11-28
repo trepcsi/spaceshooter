@@ -1,5 +1,6 @@
 package com.trepcsi.game.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -45,5 +46,9 @@ public class Bullet extends Sprite {
 
     public void update(float dt) {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+    }
+
+    public void colide(){
+        Gdx.app.log("bullet", "collision");
     }
 }

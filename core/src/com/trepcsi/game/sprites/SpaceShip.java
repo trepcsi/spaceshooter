@@ -1,5 +1,6 @@
 package com.trepcsi.game.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -76,5 +77,9 @@ public class SpaceShip extends Sprite {
 
         Bullet bulletLeft = new Bullet(screen, body.getPosition(), dir, true);
         Bullet bulletRight = new Bullet(screen, body.getPosition(), dir, false);
+    }
+
+    public void colide(){
+        Gdx.app.log("player", "collision");
     }
 }

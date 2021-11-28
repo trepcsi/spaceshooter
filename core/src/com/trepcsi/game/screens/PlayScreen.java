@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
+import com.trepcsi.game.tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
 
@@ -33,6 +34,7 @@ public class PlayScreen implements Screen {
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);
+        world.setContactListener(new WorldContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
         player = new SpaceShip(this);
         meteor = new Meteor(this);
