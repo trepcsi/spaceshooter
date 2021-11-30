@@ -15,11 +15,15 @@ import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
 import com.trepcsi.game.tools.WorldContactListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayScreen implements Screen {
 
     private SpaceShooter game;
+
     private SpaceShip player;
-    private Meteor meteor;
+    private List<Meteor> meteors;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -36,8 +40,10 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(new WorldContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
+
         player = new SpaceShip(this);
-        meteor = new Meteor(this);
+        meteors = new ArrayList<>();
+        generateMeteors();
     }
 
     @Override
@@ -59,7 +65,9 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2); //read more
 
         player.update(dt);
-        meteor.update(dt);
+        for (Meteor m : meteors) {
+            m.update(dt);
+        }
     }
 
     private void handleInput(float dt) {
@@ -79,6 +87,12 @@ public class PlayScreen implements Screen {
 
     public World getWorld() {
         return world;
+    }
+
+    private void generateMeteors() {
+        meteors.add(new Meteor(this,
+                new Vector2((SpaceShooter.V_WIDTH - 100) / SpaceShooter.PPM, (SpaceShooter.V_HEIGHT - 100) / SpaceShooter.PPM),
+                new Vector2(-1.f, 0)));
     }
 
     @Override

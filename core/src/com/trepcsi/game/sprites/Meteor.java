@@ -1,6 +1,7 @@
 package com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
@@ -10,17 +11,20 @@ public class Meteor extends Sprite {
     private World world;
     private Body body;
 
+    private Vector2 position;
+    private Vector2 velocity;
 
-    public Meteor(PlayScreen screen) {
+    public Meteor(PlayScreen screen, Vector2 position, Vector2 velocity) {
         this.world = screen.getWorld();
-
+        this.position = position;
+        this.velocity = velocity;
         defineMeteor();
     }
 
     private void defineMeteor() {
 
         BodyDef bdef = new BodyDef();
-        bdef.position.set((float) (SpaceShooter.V_WIDTH - 100) / SpaceShooter.PPM, (float) (SpaceShooter.V_HEIGHT - 100) / SpaceShooter.PPM);
+        bdef.position.set(position);
         bdef.type = BodyDef.BodyType.KinematicBody;
         body = world.createBody(bdef);
 
@@ -33,7 +37,7 @@ public class Meteor extends Sprite {
         fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT;
         body.createFixture(fdef).setUserData(this);
 
-        body.setLinearVelocity(-0.1f, 0);
+        body.setLinearVelocity(velocity);
     }
 
     public void update(float dt) {

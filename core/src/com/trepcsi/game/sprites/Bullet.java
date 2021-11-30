@@ -21,6 +21,8 @@ public class Bullet extends Sprite {
     }
 
     private void defineBullet(Vector2 pos, Vector2 dir, boolean isLeft) {
+        float velocity_size = 5.f;
+
         BodyDef bdef = new BodyDef();
 
         float r = 40 / SpaceShooter.PPM;
@@ -41,14 +43,14 @@ public class Bullet extends Sprite {
         fdef.filter.categoryBits = SpaceShooter.BULLET_BIT;
         fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
         body.createFixture(fdef).setUserData(this);
-        body.setLinearVelocity(new Vector2(dir.x * 5.f, dir.y * 5.f));
+        body.setLinearVelocity(new Vector2(dir.x * velocity_size, dir.y * velocity_size));
     }
 
     public void update(float dt) {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
     }
 
-    public void colide(){
+    public void colide() {
         Gdx.app.log("bullet", "collision");
     }
 }

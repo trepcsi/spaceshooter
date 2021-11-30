@@ -12,6 +12,10 @@ import static java.lang.Math.sqrt;
 
 public class SpaceShip extends Sprite {
 
+    private final float POSITION_X = (float) SpaceShooter.V_WIDTH / 2 / SpaceShooter.PPM;
+    private final float POSITION_Y = (float) SpaceShooter.V_HEIGHT / 5 / SpaceShooter.PPM;
+    private final float R = 40 / SpaceShooter.PPM;
+
     private PlayScreen screen;
 
     //Box2d variables
@@ -26,18 +30,17 @@ public class SpaceShip extends Sprite {
 
     private void defineSpaceShip() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set((float) SpaceShooter.V_WIDTH / 2 / SpaceShooter.PPM, (float) SpaceShooter.V_HEIGHT / 5 / SpaceShooter.PPM);
+        bdef.position.set(POSITION_X, POSITION_Y);
         bdef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(40 / SpaceShooter.PPM);
+        shape.setRadius(R);
         fdef.shape = shape;
         fdef.filter.categoryBits = SpaceShooter.PLAYER_BIT;
         fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
         body.createFixture(fdef).setUserData(this);
-
     }
 
     public void update(float dt) {
@@ -45,22 +48,26 @@ public class SpaceShip extends Sprite {
     }
 
     public void moveForward() {
+        float velocity_size = 0.8f;
+        float max_velocity_size = 1.2f;
+
         float alpha = body.getAngle();
-        float velX = MathUtils.cos(alpha) * 0.8f;
-        float velY = MathUtils.sin(alpha) * 0.8f;
+        float velX = MathUtils.cos(alpha) * velocity_size;
+        float velY = MathUtils.sin(alpha) * velocity_size;
         Vector2 linearVelocity = body.getLinearVelocity();
-        if (sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y) <= 1.2f) {
+        if (sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y) <= max_velocity_size) {
             body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
         }
     }
 
     public void turn(boolean toLeft) {
-        float alpha = body.getAngle();
+        int turnAngleDeg = 2;
 
+        float alpha = body.getAngle();
         if (toLeft) {
-            body.setTransform(body.getWorldCenter(), alpha + (2 * MathUtils.degreesToRadians));
+            body.setTransform(body.getWorldCenter(), alpha + (turnAngleDeg * MathUtils.degreesToRadians));
         } else {
-            body.setTransform(body.getWorldCenter(), alpha + (-2 * MathUtils.degreesToRadians));
+            body.setTransform(body.getWorldCenter(), alpha + (-turnAngleDeg * MathUtils.degreesToRadians));
         }
         if (body.getLinearVelocity().isZero()) {
             return;
@@ -75,11 +82,11 @@ public class SpaceShip extends Sprite {
         float velY = MathUtils.sin(alpha);
         Vector2 dir = new Vector2(velX, velY);
 
-        Bullet bulletLeft = new Bullet(screen, body.getPosition(), dir, true);
-        Bullet bulletRight = new Bullet(screen, body.getPosition(), dir, false);
+        new Bullet(screen, body.getPosition(), dir, true);
+        new Bullet(screen, body.getPosition(), dir, false);
     }
 
-    public void colide(){
+    public void colide() {
         Gdx.app.log("player", "collision");
     }
 }
