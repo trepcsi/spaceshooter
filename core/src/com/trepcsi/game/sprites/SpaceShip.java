@@ -60,9 +60,23 @@ public class SpaceShip extends Sprite {
         }
     }
 
+    public void moveForwardAfterTurn(float velocity_size) {
+        //float velocity_size = 0.8f;
+        float max_velocity_size = 1.2f;
+
+        float alpha = body.getAngle();
+        float velX = MathUtils.cos(alpha) * velocity_size;
+        float velY = MathUtils.sin(alpha) * velocity_size;
+        Vector2 linearVelocity = body.getLinearVelocity();
+        if (sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y) <= max_velocity_size) {
+            body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
+        }
+    }
+
     public void turn(boolean toLeft) {
         int turnAngleDeg = 2;
-
+        Vector2 linearVelocity = body.getLinearVelocity();
+        var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
         float alpha = body.getAngle();
         if (toLeft) {
             body.setTransform(body.getWorldCenter(), alpha + (turnAngleDeg * MathUtils.degreesToRadians));
@@ -73,7 +87,7 @@ public class SpaceShip extends Sprite {
             return;
         }
         body.setLinearVelocity(new Vector2(0, 0));
-        moveForward();
+        moveForwardAfterTurn((float) current_speed * 0.8f);
     }
 
     public void shoot() {
