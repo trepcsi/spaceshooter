@@ -15,22 +15,22 @@ public class Bullet extends Sprite {
     private World world;
     private Body body;
 
-    public Bullet(PlayScreen screen, Vector2 pos, Vector2 dir, boolean isLeft) {
+    public Bullet(PlayScreen screen, Vector2 position, Vector2 velocity, boolean isLeft) {
         this.world = screen.getWorld();
-        defineBullet(pos, dir, isLeft);
+        defineBullet(position, velocity, isLeft);
     }
 
-    private void defineBullet(Vector2 pos, Vector2 dir, boolean isLeft) {
-        float velocity_size = 5.f;
+    private void defineBullet(Vector2 position, Vector2 velocity, boolean isLeft) {
+        float velocity_size = 8.f;
 
         BodyDef bdef = new BodyDef();
 
         float r = 40 / SpaceShooter.PPM;
-        float alpha = dir.angleRad();
+        float alpha = velocity.angleRad();
         if (isLeft) {
-            bdef.position.set(pos.x + r * (cos(alpha) + sin(alpha)), pos.y + r * (sin(alpha) - cos(alpha)));
+            bdef.position.set(position.x + r * (cos(alpha) + sin(alpha)), position.y + r * (sin(alpha) - cos(alpha)));
         } else {
-            bdef.position.set(pos.x + r * (cos(alpha) - sin(alpha)), pos.y + r * (sin(alpha) + cos(alpha)));
+            bdef.position.set(position.x + r * (cos(alpha) - sin(alpha)), position.y + r * (sin(alpha) + cos(alpha)));
         }
 
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -43,7 +43,7 @@ public class Bullet extends Sprite {
         fdef.filter.categoryBits = SpaceShooter.BULLET_BIT;
         fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
         body.createFixture(fdef).setUserData(this);
-        body.setLinearVelocity(new Vector2(dir.x * velocity_size, dir.y * velocity_size));
+        body.setLinearVelocity(new Vector2(velocity.x * velocity_size, velocity.y * velocity_size));
     }
 
     public void update(float dt) {

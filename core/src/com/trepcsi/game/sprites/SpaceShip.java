@@ -48,8 +48,8 @@ public class SpaceShip extends Sprite {
     }
 
     public void moveForward() {
-        float velocity_size = 0.8f;
-        float max_velocity_size = 1.2f;
+        float velocity_size = 1.f;
+        float max_velocity_size = 2.5f;
 
         float alpha = body.getAngle();
         float velX = MathUtils.cos(alpha) * velocity_size;
@@ -60,21 +60,21 @@ public class SpaceShip extends Sprite {
         }
     }
 
-    public void moveForwardAfterTurn(float velocity_size) {
-        //float velocity_size = 0.8f;
-        float max_velocity_size = 1.2f;
+    public void moveForward(float velocity_size) {
+        float max_velocity = 2.5f;
 
         float alpha = body.getAngle();
-        float velX = MathUtils.cos(alpha) * velocity_size;
-        float velY = MathUtils.sin(alpha) * velocity_size;
+        float velocity_x = MathUtils.cos(alpha) * velocity_size;
+        float velocity_y = MathUtils.sin(alpha) * velocity_size;
+
         Vector2 linearVelocity = body.getLinearVelocity();
-        if (sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y) <= max_velocity_size) {
-            body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
+        if (sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y) <= max_velocity) {
+            body.applyLinearImpulse(new Vector2(velocity_x, velocity_y), body.getWorldCenter(), true);
         }
     }
 
     public void turn(boolean toLeft) {
-        int turnAngleDeg = 2;
+        int turnAngleDeg = 4;
         Vector2 linearVelocity = body.getLinearVelocity();
         var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
         float alpha = body.getAngle();
@@ -83,21 +83,18 @@ public class SpaceShip extends Sprite {
         } else {
             body.setTransform(body.getWorldCenter(), alpha + (-turnAngleDeg * MathUtils.degreesToRadians));
         }
-        if (body.getLinearVelocity().isZero()) {
-            return;
-        }
         body.setLinearVelocity(new Vector2(0, 0));
-        moveForwardAfterTurn((float) current_speed * 0.8f);
+        moveForward((float) current_speed * 0.75f);
     }
 
     public void shoot() {
         float alpha = body.getAngle();
-        float velX = MathUtils.cos(alpha);
-        float velY = MathUtils.sin(alpha);
-        Vector2 dir = new Vector2(velX, velY);
+        float velocity_x = MathUtils.cos(alpha);
+        float velocity_y = MathUtils.sin(alpha);
+        Vector2 velocity = new Vector2(velocity_x, velocity_y);
 
-        new Bullet(screen, body.getPosition(), dir, true);
-        new Bullet(screen, body.getPosition(), dir, false);
+        new Bullet(screen, body.getPosition(), velocity, true);
+        new Bullet(screen, body.getPosition(), velocity, false);
     }
 
     public void colide() {
