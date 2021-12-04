@@ -84,7 +84,7 @@ public class SpaceShip extends Sprite {
             body.setTransform(body.getWorldCenter(), alpha + (-turnAngleDeg * MathUtils.degreesToRadians));
         }
         body.setLinearVelocity(new Vector2(0, 0));
-        moveForward((float) current_speed * 0.75f);
+        moveForward((float) current_speed * 0.9f);
     }
 
     public void shoot() {
@@ -95,6 +95,13 @@ public class SpaceShip extends Sprite {
 
         new Bullet(screen, body.getPosition(), velocity, true);
         new Bullet(screen, body.getPosition(), velocity, false);
+    }
+
+    public void slowDown() {
+        Vector2 linearVelocity = body.getLinearVelocity();
+        var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
+        body.setLinearVelocity(new Vector2(0, 0));
+        moveForward((float) current_speed * 0.93f);
     }
 
     public void colide() {

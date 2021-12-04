@@ -73,7 +73,10 @@ public class PlayScreen implements Screen {
     private void handleInput(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.moveForward();
+        } else {
+            player.slowDown();
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.turn(true);
         }
