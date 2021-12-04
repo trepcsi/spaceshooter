@@ -25,7 +25,8 @@ public class Meteor extends Sprite {
 
         BodyDef bdef = new BodyDef();
         bdef.position.set(position);
-        bdef.type = BodyDef.BodyType.KinematicBody;
+        //TODO collision with player and bullets not to move the massive meteor LOL
+        bdef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdef);
 
 
@@ -34,7 +35,7 @@ public class Meteor extends Sprite {
         shape.setRadius(60 / SpaceShooter.PPM);
         fdef.shape = shape;
         fdef.filter.categoryBits = SpaceShooter.METEOR_BIT;
-        fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT;
+        fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT | SpaceShooter.WALL_BIT;
         body.createFixture(fdef).setUserData(this);
 
         body.setLinearVelocity(velocity);

@@ -39,7 +39,7 @@ public class SpaceShip extends Sprite {
         shape.setRadius(R);
         fdef.shape = shape;
         fdef.filter.categoryBits = SpaceShooter.PLAYER_BIT;
-        fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
+        fdef.filter.maskBits = SpaceShooter.METEOR_BIT | SpaceShooter.WALL_BIT;
         body.createFixture(fdef).setUserData(this);
     }
 
@@ -100,6 +100,9 @@ public class SpaceShip extends Sprite {
     public void slowDown() {
         Vector2 linearVelocity = body.getLinearVelocity();
         var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
+
+        if (current_speed < 0.02) return;
+
         body.setLinearVelocity(new Vector2(0, 0));
         moveForward((float) current_speed * 0.93f);
     }

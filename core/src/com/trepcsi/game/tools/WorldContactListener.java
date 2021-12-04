@@ -18,7 +18,7 @@ public class WorldContactListener implements ContactListener {
             if (fixB.getFilterData().categoryBits == SpaceShooter.PLAYER_BIT) {
                 ((SpaceShip) fixB.getUserData()).colide();
             }
-        } else {
+        } else if (fixB.getFilterData().categoryBits == SpaceShooter.METEOR_BIT) {
             if (fixA.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
                 ((Bullet) fixA.getUserData()).colide();
             }

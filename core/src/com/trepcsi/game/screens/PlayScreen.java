@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
+import com.trepcsi.game.sprites.walls.Wall;
+import com.trepcsi.game.sprites.walls.WallType;
 import com.trepcsi.game.tools.WorldContactListener;
 
 import java.util.ArrayList;
@@ -41,6 +43,10 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
 
+        Wall wallLeft = new Wall(this, WallType.LEFT);
+        Wall wallRight = new Wall(this, WallType.RIGHT);
+        Wall wallTop = new Wall(this, WallType.TOP);
+        Wall wallBot = new Wall(this, WallType.BOTTOM);
         player = new SpaceShip(this);
         meteors = new ArrayList<>();
         generateMeteors();
