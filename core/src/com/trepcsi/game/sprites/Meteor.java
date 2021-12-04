@@ -25,10 +25,12 @@ public class Meteor extends Sprite {
 
         BodyDef bdef = new BodyDef();
         bdef.position.set(position);
-        //TODO collision with player and bullets not to move the massive meteor LOL
         bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
 
+        body = world.createBody(bdef);
+        MassData massData = new MassData();
+        massData.mass = 100000.f;
+        body.setMassData(massData);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
