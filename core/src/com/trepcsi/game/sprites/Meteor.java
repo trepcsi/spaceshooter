@@ -1,10 +1,15 @@
 package com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
+import com.trepcsi.game.sprites.walls.Wall;
+import com.trepcsi.game.sprites.walls.WallType;
+
+import static java.lang.Math.sqrt;
 
 public class Meteor extends Sprite {
 
@@ -45,5 +50,22 @@ public class Meteor extends Sprite {
 
     public void update(float dt) {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+    }
+
+    public void onWallHit(Wall wall) {
+        Vector2 oldVelocity = body.getLinearVelocity();
+
+        float current_speed = (float) sqrt(oldVelocity.x * oldVelocity.x + oldVelocity.y * oldVelocity.y);
+        float alpha = oldVelocity.angleRad();
+        float velocity_x = MathUtils.cos(alpha) * current_speed;
+        float velocity_y = MathUtils.sin(alpha) * current_speed;
+        if (wall.getType() == WallType.LEFT || wall.getType() == WallType.RIGHT) {
+            velocity_x = -velocity_x;
+        } else {
+            velocity_y = -velocity_y;
+        }
+
+        Vector2 newVelocity = new Vector2(velocity_x, velocity_y);
+        body.setLinearVelocity(newVelocity);
     }
 }

@@ -50,4 +50,8 @@ public class Wall extends Sprite {
         fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT | SpaceShooter.METEOR_BIT;
         body.createFixture(fdef).setUserData(this);
     }
+
+    public WallType getType() {
+        return type;
+    }
 }

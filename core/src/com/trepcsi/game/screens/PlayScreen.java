@@ -102,6 +102,9 @@ public class PlayScreen implements Screen {
         meteors.add(new Meteor(this,
                 new Vector2((SpaceShooter.V_WIDTH - 100) / SpaceShooter.PPM, (SpaceShooter.V_HEIGHT - 100) / SpaceShooter.PPM),
                 new Vector2(-1.f, 0)));
+        meteors.add(new Meteor(this,
+                new Vector2(100 / SpaceShooter.PPM, 100 / SpaceShooter.PPM),
+                new Vector2(.8f, .8f)));
     }
 
     @Override
