@@ -1,6 +1,7 @@
 package com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +24,9 @@ public class SpaceShip extends Sprite {
     private Body body;
 
     public SpaceShip(PlayScreen screen) {
+        super(new Texture("playerShip1_blue.png"));
+        setBounds(getX(), getY(), 80 / SpaceShooter.PPM, 80 / SpaceShooter.PPM);
+
         this.world = screen.getWorld();
         this.screen = screen;
         defineSpaceShip();

@@ -1,5 +1,6 @@
 package com.trepcsi.game.sprites;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,7 +20,11 @@ public class Meteor extends Sprite {
     private Vector2 position;
     private Vector2 velocity;
 
+
     public Meteor(PlayScreen screen, Vector2 position, Vector2 velocity) {
+        super(new Texture("meteorBrown_big4.png"));
+        setBounds(getX(), getY(), 120 / SpaceShooter.PPM, 120 / SpaceShooter.PPM);
+
         this.world = screen.getWorld();
         this.position = position;
         this.velocity = velocity;

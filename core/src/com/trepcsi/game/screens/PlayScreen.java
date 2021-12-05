@@ -63,6 +63,10 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         game.batch.draw(background, 0, 0, SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM);
+        player.draw(game.batch);
+        for (Meteor meteor : meteors) {
+            meteor.draw(game.batch);
+        }
         game.batch.end();
 
         box2DDebugRenderer.render(world, camera.combined);
@@ -85,7 +89,6 @@ public class PlayScreen implements Screen {
         } else {
             player.slowDown();
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.turn(true);
         }
