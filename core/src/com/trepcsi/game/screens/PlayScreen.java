@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trepcsi.game.SpaceShooter;
+import com.trepcsi.game.scenes.Hud;
 import com.trepcsi.game.sprites.Bullet;
 import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
@@ -32,6 +33,7 @@ public class PlayScreen implements Screen {
 
     private OrthographicCamera camera;
     private Viewport viewport;
+    private Hud hud;
 
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -41,7 +43,8 @@ public class PlayScreen implements Screen {
     public PlayScreen(SpaceShooter game) {
         this.game = game;
         camera = new OrthographicCamera();
-        viewport = new FitViewport(SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM, camera);  //need to scale after b2d
+        viewport = new FitViewport(SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM, camera);
+        hud = Hud.getInstance(game.batch);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
         background = new Texture("big_background.jpg");
 
@@ -70,11 +73,13 @@ public class PlayScreen implements Screen {
         for (Meteor meteor : meteors) {
             meteor.draw(game.batch);
         }
-        for(Bullet bullet: bullets){
+        for (Bullet bullet : bullets) {
             bullet.draw(game.batch);
         }
         game.batch.end();
 
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         //box2DDebugRenderer.render(world, camera.combined);
     }
 
@@ -90,6 +95,8 @@ public class PlayScreen implements Screen {
         for (Bullet b : bullets) {
             b.update(dt);
         }
+
+        hud.update(dt);
     }
 
     private void handleInput(float dt) {
@@ -156,6 +163,8 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        box2DDebugRenderer.dispose();
+        world.dispose();
+        hud.dispose();
     }
 }
