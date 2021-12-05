@@ -1,6 +1,7 @@
 package com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -8,6 +9,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
 
+import java.util.List;
+
+import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;
 
 public class SpaceShip extends Sprite {
@@ -23,6 +27,9 @@ public class SpaceShip extends Sprite {
     private Body body;
 
     public SpaceShip(PlayScreen screen) {
+        super(new Texture("playerShip1_blue.png"));
+        setBounds(getX(), getY(), 80 / SpaceShooter.PPM, 80 / SpaceShooter.PPM);
+
         this.world = screen.getWorld();
         this.screen = screen;
         defineSpaceShip();
@@ -33,6 +40,7 @@ public class SpaceShip extends Sprite {
         bdef.position.set(POSITION_X, POSITION_Y);
         bdef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdef);
+        body.setTransform(body.getWorldCenter(), (float) PI / 2);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
@@ -74,27 +82,31 @@ public class SpaceShip extends Sprite {
     }
 
     public void turn(boolean toLeft) {
-        int turnAngleDeg = 4;
+        int turnAngleDeg = 6;
         Vector2 linearVelocity = body.getLinearVelocity();
         var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
         float alpha = body.getAngle();
+
+        setOrigin(body.getWorldCenter().x / SpaceShooter.PPM + R, body.getWorldCenter().y / SpaceShooter.PPM + R);
         if (toLeft) {
+            rotate(turnAngleDeg);
             body.setTransform(body.getWorldCenter(), alpha + (turnAngleDeg * MathUtils.degreesToRadians));
         } else {
+            rotate(-turnAngleDeg);
             body.setTransform(body.getWorldCenter(), alpha + (-turnAngleDeg * MathUtils.degreesToRadians));
         }
         body.setLinearVelocity(new Vector2(0, 0));
         moveForward((float) current_speed * 0.9f);
     }
 
-    public void shoot() {
+    public void shoot(List<Bullet> bulletList) {
         float alpha = body.getAngle();
         float velocity_x = MathUtils.cos(alpha);
         float velocity_y = MathUtils.sin(alpha);
         Vector2 velocity = new Vector2(velocity_x, velocity_y);
 
-        new Bullet(screen, body.getPosition(), velocity, true);
-        new Bullet(screen, body.getPosition(), velocity, false);
+        bulletList.add(new Bullet(screen, body.getPosition(), velocity, true));
+        bulletList.add(new Bullet(screen, body.getPosition(), velocity, false));
     }
 
     public void slowDown() {

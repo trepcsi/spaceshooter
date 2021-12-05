@@ -1,10 +1,16 @@
 package com.trepcsi.game.sprites;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
+import com.trepcsi.game.sprites.walls.Wall;
+import com.trepcsi.game.sprites.walls.WallType;
+
+import static java.lang.Math.sqrt;
 
 public class Meteor extends Sprite {
 
@@ -14,7 +20,11 @@ public class Meteor extends Sprite {
     private Vector2 position;
     private Vector2 velocity;
 
+
     public Meteor(PlayScreen screen, Vector2 position, Vector2 velocity) {
+        super(new Texture("meteorBrown_big4.png"));
+        setBounds(getX(), getY(), 120 / SpaceShooter.PPM, 120 / SpaceShooter.PPM);
+
         this.world = screen.getWorld();
         this.position = position;
         this.velocity = velocity;
@@ -25,10 +35,12 @@ public class Meteor extends Sprite {
 
         BodyDef bdef = new BodyDef();
         bdef.position.set(position);
-        //TODO collision with player and bullets not to move the massive meteor LOL
         bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
 
+        body = world.createBody(bdef);
+        MassData massData = new MassData();
+        massData.mass = 100000.f;
+        body.setMassData(massData);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
@@ -43,5 +55,22 @@ public class Meteor extends Sprite {
 
     public void update(float dt) {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+    }
+
+    public void onWallHit(Wall wall) {
+        Vector2 oldVelocity = body.getLinearVelocity();
+
+        float current_speed = (float) sqrt(oldVelocity.x * oldVelocity.x + oldVelocity.y * oldVelocity.y);
+        float alpha = oldVelocity.angleRad();
+        float velocity_x = MathUtils.cos(alpha) * current_speed;
+        float velocity_y = MathUtils.sin(alpha) * current_speed;
+        if (wall.getType() == WallType.LEFT || wall.getType() == WallType.RIGHT) {
+            velocity_x = -velocity_x;
+        } else {
+            velocity_y = -velocity_y;
+        }
+
+        Vector2 newVelocity = new Vector2(velocity_x, velocity_y);
+        body.setLinearVelocity(newVelocity);
     }
 }

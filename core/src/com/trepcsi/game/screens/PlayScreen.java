@@ -5,12 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trepcsi.game.SpaceShooter;
+import com.trepcsi.game.sprites.Bullet;
 import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
 import com.trepcsi.game.sprites.walls.Wall;
@@ -26,6 +28,7 @@ public class PlayScreen implements Screen {
 
     private SpaceShip player;
     private List<Meteor> meteors;
+    private List<Bullet> bullets;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -33,22 +36,24 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
+    private Texture background;
+
     public PlayScreen(SpaceShooter game) {
         this.game = game;
         camera = new OrthographicCamera();
         viewport = new FitViewport(SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM, camera);  //need to scale after b2d
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+        background = new Texture("big_background.jpg");
 
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(new WorldContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-        Wall wallLeft = new Wall(this, WallType.LEFT);
-        Wall wallRight = new Wall(this, WallType.RIGHT);
-        Wall wallTop = new Wall(this, WallType.TOP);
-        Wall wallBot = new Wall(this, WallType.BOTTOM);
+
         player = new SpaceShip(this);
         meteors = new ArrayList<>();
+        bullets = new ArrayList<>();
+        generateWalls();
         generateMeteors();
     }
 
@@ -58,11 +63,19 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor((float) 45 / 255, (float) 45 / 255, (float) 180 / 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        box2DDebugRenderer.render(world, camera.combined);
-
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
+        game.batch.draw(background, 0, 0, SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM);
+        player.draw(game.batch);
+        for (Meteor meteor : meteors) {
+            meteor.draw(game.batch);
+        }
+        for(Bullet bullet: bullets){
+            bullet.draw(game.batch);
+        }
         game.batch.end();
+
+        //box2DDebugRenderer.render(world, camera.combined);
     }
 
     private void update(float dt) {
@@ -74,6 +87,9 @@ public class PlayScreen implements Screen {
         for (Meteor m : meteors) {
             m.update(dt);
         }
+        for (Bullet b : bullets) {
+            b.update(dt);
+        }
     }
 
     private void handleInput(float dt) {
@@ -82,7 +98,6 @@ public class PlayScreen implements Screen {
         } else {
             player.slowDown();
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.turn(true);
         }
@@ -90,7 +105,7 @@ public class PlayScreen implements Screen {
             player.turn(false);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            player.shoot();
+            player.shoot(bullets);
         }
     }
 
@@ -102,6 +117,16 @@ public class PlayScreen implements Screen {
         meteors.add(new Meteor(this,
                 new Vector2((SpaceShooter.V_WIDTH - 100) / SpaceShooter.PPM, (SpaceShooter.V_HEIGHT - 100) / SpaceShooter.PPM),
                 new Vector2(-1.f, 0)));
+        meteors.add(new Meteor(this,
+                new Vector2(100 / SpaceShooter.PPM, 100 / SpaceShooter.PPM),
+                new Vector2(.7f, .7f)));
+    }
+
+    private void generateWalls() {
+        new Wall(this, WallType.LEFT);
+        new Wall(this, WallType.RIGHT);
+        new Wall(this, WallType.TOP);
+        new Wall(this, WallType.BOTTOM);
     }
 
     @Override

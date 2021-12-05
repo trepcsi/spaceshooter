@@ -1,6 +1,7 @@
 package com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -16,6 +17,8 @@ public class Bullet extends Sprite {
     private Body body;
 
     public Bullet(PlayScreen screen, Vector2 position, Vector2 velocity, boolean isLeft) {
+        super(new Texture("laserBlue02.png"));
+        setBounds(getX(), getY(), 6 / SpaceShooter.PPM, 6 / SpaceShooter.PPM);
         this.world = screen.getWorld();
         defineBullet(position, velocity, isLeft);
     }
