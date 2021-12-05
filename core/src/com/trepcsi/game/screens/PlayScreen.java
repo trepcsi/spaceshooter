@@ -47,12 +47,10 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-        Wall wallLeft = new Wall(this, WallType.LEFT);
-        Wall wallRight = new Wall(this, WallType.RIGHT);
-        Wall wallTop = new Wall(this, WallType.TOP);
-        Wall wallBot = new Wall(this, WallType.BOTTOM);
+
         player = new SpaceShip(this);
         meteors = new ArrayList<>();
+        generateWalls();
         generateMeteors();
     }
 
@@ -110,6 +108,13 @@ public class PlayScreen implements Screen {
         meteors.add(new Meteor(this,
                 new Vector2(100 / SpaceShooter.PPM, 100 / SpaceShooter.PPM),
                 new Vector2(.7f, .7f)));
+    }
+
+    private void generateWalls() {
+        new Wall(this, WallType.LEFT);
+        new Wall(this, WallType.RIGHT);
+        new Wall(this, WallType.TOP);
+        new Wall(this, WallType.BOTTOM);
     }
 
     @Override
