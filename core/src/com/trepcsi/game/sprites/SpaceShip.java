@@ -80,7 +80,7 @@ public class SpaceShip extends Sprite {
     }
 
     public void turn(boolean toLeft) {
-        int turnAngleDeg = 5;
+        int turnAngleDeg = 6;
         Vector2 linearVelocity = body.getLinearVelocity();
         var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
         float alpha = body.getAngle();
