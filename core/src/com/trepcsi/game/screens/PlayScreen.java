@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trepcsi.game.SpaceShooter;
+import com.trepcsi.game.sprites.Bullet;
 import com.trepcsi.game.sprites.Meteor;
 import com.trepcsi.game.sprites.SpaceShip;
 import com.trepcsi.game.sprites.walls.Wall;
@@ -27,6 +28,7 @@ public class PlayScreen implements Screen {
 
     private SpaceShip player;
     private List<Meteor> meteors;
+    private List<Bullet> bullets;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -50,6 +52,7 @@ public class PlayScreen implements Screen {
 
         player = new SpaceShip(this);
         meteors = new ArrayList<>();
+        bullets = new ArrayList<>();
         generateWalls();
         generateMeteors();
     }
@@ -67,9 +70,12 @@ public class PlayScreen implements Screen {
         for (Meteor meteor : meteors) {
             meteor.draw(game.batch);
         }
+        for(Bullet bullet: bullets){
+            bullet.draw(game.batch);
+        }
         game.batch.end();
 
-        box2DDebugRenderer.render(world, camera.combined);
+        //box2DDebugRenderer.render(world, camera.combined);
     }
 
     private void update(float dt) {
@@ -80,6 +86,9 @@ public class PlayScreen implements Screen {
         player.update(dt);
         for (Meteor m : meteors) {
             m.update(dt);
+        }
+        for (Bullet b : bullets) {
+            b.update(dt);
         }
     }
 
@@ -96,7 +105,7 @@ public class PlayScreen implements Screen {
             player.turn(false);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            player.shoot();
+            player.shoot(bullets);
         }
     }
 
