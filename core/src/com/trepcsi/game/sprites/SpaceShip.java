@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;
 
 public class SpaceShip extends Sprite {
@@ -37,6 +38,7 @@ public class SpaceShip extends Sprite {
         bdef.position.set(POSITION_X, POSITION_Y);
         bdef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdef);
+        body.setTransform(body.getWorldCenter(), (float) PI / 2);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
@@ -82,9 +84,13 @@ public class SpaceShip extends Sprite {
         Vector2 linearVelocity = body.getLinearVelocity();
         var current_speed = sqrt(linearVelocity.x * linearVelocity.x + linearVelocity.y * linearVelocity.y);
         float alpha = body.getAngle();
+
+        setOrigin(body.getWorldCenter().x / SpaceShooter.PPM + R, body.getWorldCenter().y / SpaceShooter.PPM + R);
         if (toLeft) {
+            rotate(turnAngleDeg);
             body.setTransform(body.getWorldCenter(), alpha + (turnAngleDeg * MathUtils.degreesToRadians));
         } else {
+            rotate(-turnAngleDeg);
             body.setTransform(body.getWorldCenter(), alpha + (-turnAngleDeg * MathUtils.degreesToRadians));
         }
         body.setLinearVelocity(new Vector2(0, 0));
