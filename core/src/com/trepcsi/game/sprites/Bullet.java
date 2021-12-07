@@ -1,10 +1,12 @@
 package com.trepcsi.game.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
 
@@ -13,13 +15,13 @@ import static com.badlogic.gdx.math.MathUtils.sin;
 
 public class Bullet extends Sprite {
 
-    private World world;
+    private PlayScreen screen;
     private Body body;
 
     public Bullet(PlayScreen screen, Vector2 position, Vector2 velocity, boolean isLeft) {
         super(new Texture("laserBlue02.png"));
         setBounds(getX(), getY(), 6 / SpaceShooter.PPM, 6 / SpaceShooter.PPM);
-        this.world = screen.getWorld();
+        this.screen = screen;
         defineBullet(position, velocity, isLeft);
     }
 
@@ -37,14 +39,14 @@ public class Bullet extends Sprite {
         }
 
         bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
+        body = screen.getWorld().createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / SpaceShooter.PPM);
         fdef.shape = shape;
         fdef.filter.categoryBits = SpaceShooter.BULLET_BIT;
-        fdef.filter.maskBits = SpaceShooter.METEOR_BIT;
+        fdef.filter.maskBits = SpaceShooter.METEOR_BIT | SpaceShooter.WALL_BIT;
         body.createFixture(fdef).setUserData(this);
         body.setLinearVelocity(new Vector2(velocity.x * velocity_size, velocity.y * velocity_size));
     }
@@ -53,7 +55,11 @@ public class Bullet extends Sprite {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
     }
 
-    public void colide() {
-        Gdx.app.log("bullet", "collision");
+    public void onMeteorHit() {
+        screen.removeBullet(this);
+    }
+
+    public void onWallHit() {
+        screen.removeBullet(this);
     }
 }

@@ -167,4 +167,8 @@ public class PlayScreen implements Screen {
         world.dispose();
         hud.dispose();
     }
+
+    public void removeBullet(Bullet bullet) {
+        bullets.remove(bullet);
+    }
 }

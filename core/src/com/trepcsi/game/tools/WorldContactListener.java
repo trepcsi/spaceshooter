@@ -15,14 +15,14 @@ public class WorldContactListener implements ContactListener {
 
         if (fixA.getFilterData().categoryBits == SpaceShooter.METEOR_BIT) {
             if (fixB.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
-                ((Bullet) fixB.getUserData()).colide();
+                ((Bullet) fixB.getUserData()).onMeteorHit();
             }
             if (fixB.getFilterData().categoryBits == SpaceShooter.PLAYER_BIT) {
                 ((SpaceShip) fixB.getUserData()).colide();
             }
         } else if (fixB.getFilterData().categoryBits == SpaceShooter.METEOR_BIT) {
             if (fixA.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
-                ((Bullet) fixA.getUserData()).colide();
+                ((Bullet) fixA.getUserData()).onMeteorHit();
             }
             if (fixA.getFilterData().categoryBits == SpaceShooter.PLAYER_BIT) {
                 ((SpaceShip) fixA.getUserData()).colide();
@@ -35,6 +35,13 @@ public class WorldContactListener implements ContactListener {
                 ((Meteor) fixA.getUserData()).onWallHit((Wall) fixB.getUserData());
             } else if (fixB.getFilterData().categoryBits == SpaceShooter.METEOR_BIT) {
                 ((Meteor) fixB.getUserData()).onWallHit((Wall) fixA.getUserData());
+            }
+        }
+        if (cDef == (SpaceShooter.BULLET_BIT | SpaceShooter.WALL_BIT)) {
+            if (fixA.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
+                ((Bullet) fixA.getUserData()).onWallHit();
+            } else if (fixB.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
+                ((Bullet) fixB.getUserData()).onWallHit();
             }
         }
 

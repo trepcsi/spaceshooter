@@ -44,7 +44,7 @@ public class Hud implements Disposable {
         Table table = new Table();
         table.setFillParent(true);
         table.top().right();
-        timeLabel.setFontScale(3);
+        timeLabel.setFontScale(2.5f);
         table.add(timeLabel).padTop(10).padRight(50);
 
         stage.addActor(table);
