@@ -3,6 +3,7 @@ package com.trepcsi.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -170,5 +171,9 @@ public class PlayScreen implements Screen {
 
     public void removeBullet(Bullet bullet) {
         bullets.remove(bullet);
+    }
+
+    public AssetManager getAssetManager() {
+        return this.game.manager;
     }
 }

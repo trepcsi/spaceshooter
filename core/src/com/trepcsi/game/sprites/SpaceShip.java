@@ -1,6 +1,8 @@
 package com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -21,6 +23,7 @@ public class SpaceShip extends Sprite {
     private final float R = 40 / SpaceShooter.PPM;
 
     private PlayScreen screen;
+    private AssetManager manager;
 
     //Box2d variables
     private World world;
@@ -32,6 +35,7 @@ public class SpaceShip extends Sprite {
 
         this.world = screen.getWorld();
         this.screen = screen;
+        manager = screen.getAssetManager();
         defineSpaceShip();
     }
 
@@ -107,6 +111,7 @@ public class SpaceShip extends Sprite {
 
         bulletList.add(new Bullet(screen, body.getPosition(), velocity, true));
         bulletList.add(new Bullet(screen, body.getPosition(), velocity, false));
+        manager.get("sounds/sfx_laser2.ogg", Sound.class).play(1.5f);
     }
 
     public void slowDown() {
