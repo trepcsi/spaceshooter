@@ -17,6 +17,7 @@ import com.trepcsi.game.scenes.Hud;
 import com.trepcsi.game.sprites.Bullet;
 import com.trepcsi.game.sprites.SpaceShip;
 import com.trepcsi.game.sprites.enemies.Meteor;
+import com.trepcsi.game.sprites.enemies.MeteorType;
 import com.trepcsi.game.sprites.walls.Wall;
 import com.trepcsi.game.sprites.walls.WallType;
 import com.trepcsi.game.tools.WorldContactListener;
@@ -81,10 +82,11 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        //box2DDebugRenderer.render(world, camera.combined);
+        box2DDebugRenderer.render(world, camera.combined);
     }
 
     private void update(float dt) {
+        System.out.println(world.getBodyCount());
         handleInput(dt);
 
         world.step(1 / 60f, 6, 2); //read more
@@ -124,10 +126,12 @@ public class PlayScreen implements Screen {
     private void generateMeteors() {
         meteors.add(new Meteor(this,
                 new Vector2((SpaceShooter.V_WIDTH - 100) / SpaceShooter.PPM, (SpaceShooter.V_HEIGHT - 100) / SpaceShooter.PPM),
-                new Vector2(-1.f, 0)));
+                new Vector2(-1.f, 0),
+                MeteorType.LARGE));
         meteors.add(new Meteor(this,
                 new Vector2(100 / SpaceShooter.PPM, 100 / SpaceShooter.PPM),
-                new Vector2(.7f, .7f)));
+                new Vector2(.7f, .7f),
+                MeteorType.LARGE));
     }
 
     private void generateWalls() {
@@ -167,10 +171,6 @@ public class PlayScreen implements Screen {
         box2DDebugRenderer.dispose();
         world.dispose();
         hud.dispose();
-    }
-
-    public void removeBullet(Bullet bullet) {
-        bullets.remove(bullet);
     }
 
     public AssetManager getAssetManager() {

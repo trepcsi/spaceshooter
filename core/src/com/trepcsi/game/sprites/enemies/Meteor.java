@@ -1,6 +1,7 @@
 package com.trepcsi.game.sprites.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -14,20 +15,26 @@ import static java.lang.Math.sqrt;
 
 public class Meteor extends Sprite {
 
-    private World world;
     private Body body;
+    private PlayScreen screen;
 
     private Vector2 position;
     private Vector2 velocity;
+    private MeteorType type;
 
+    private boolean setToDestroy;
+    private boolean destroyed;
 
-    public Meteor(PlayScreen screen, Vector2 position, Vector2 velocity) {
+    public Meteor(PlayScreen screen, Vector2 position, Vector2 velocity, MeteorType type) {
         super(new Texture("meteorBrown_big4.png"));
         setBounds(getX(), getY(), 120 / SpaceShooter.PPM, 120 / SpaceShooter.PPM);
 
-        this.world = screen.getWorld();
+        this.type = type;
+        this.screen = screen;
         this.position = position;
         this.velocity = velocity;
+        this.destroyed = false;
+        this.setToDestroy = false;
         defineMeteor();
     }
 
@@ -37,7 +44,7 @@ public class Meteor extends Sprite {
         bdef.position.set(position);
         bdef.type = BodyDef.BodyType.DynamicBody;
 
-        body = world.createBody(bdef);
+        body = screen.getWorld().createBody(bdef);
         MassData massData = new MassData();
         massData.mass = 100000.f;
         body.setMassData(massData);
@@ -54,7 +61,12 @@ public class Meteor extends Sprite {
     }
 
     public void update(float dt) {
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        if (setToDestroy && !destroyed) {
+            screen.getWorld().destroyBody(body);
+            destroyed = true;
+        } else if (!destroyed) {
+            setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        }
     }
 
     public void onWallHit(Wall wall) {
@@ -72,5 +84,16 @@ public class Meteor extends Sprite {
 
         Vector2 newVelocity = new Vector2(velocity_x, velocity_y);
         body.setLinearVelocity(newVelocity);
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if (!destroyed) {
+            super.draw(batch);
+        }
+    }
+
+    public void onBulletHit() {
+        setToDestroy = true;
     }
 }

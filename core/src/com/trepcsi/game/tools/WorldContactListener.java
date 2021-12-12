@@ -16,6 +16,7 @@ public class WorldContactListener implements ContactListener {
         if (fixA.getFilterData().categoryBits == SpaceShooter.METEOR_BIT) {
             if (fixB.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
                 ((Bullet) fixB.getUserData()).onMeteorHit();
+                ((Meteor) fixA.getUserData()).onBulletHit();
             }
             if (fixB.getFilterData().categoryBits == SpaceShooter.PLAYER_BIT) {
                 ((SpaceShip) fixB.getUserData()).colide();
@@ -23,6 +24,7 @@ public class WorldContactListener implements ContactListener {
         } else if (fixB.getFilterData().categoryBits == SpaceShooter.METEOR_BIT) {
             if (fixA.getFilterData().categoryBits == SpaceShooter.BULLET_BIT) {
                 ((Bullet) fixA.getUserData()).onMeteorHit();
+                ((Meteor) fixB.getUserData()).onBulletHit();
             }
             if (fixA.getFilterData().categoryBits == SpaceShooter.PLAYER_BIT) {
                 ((SpaceShip) fixA.getUserData()).colide();
