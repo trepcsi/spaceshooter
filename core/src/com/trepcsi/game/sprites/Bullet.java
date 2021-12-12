@@ -18,6 +18,9 @@ public class Bullet extends Sprite {
     private PlayScreen screen;
     private Body body;
 
+    private boolean setToDestroy = false;
+    private boolean destroyed = false;
+
     public Bullet(PlayScreen screen, Vector2 position, Vector2 velocity, boolean isLeft) {
         super(new Texture("laserBlue02.png"));
         setBounds(getX(), getY(), 6 / SpaceShooter.PPM, 6 / SpaceShooter.PPM);
@@ -52,10 +55,15 @@ public class Bullet extends Sprite {
     }
 
     public void update(float dt) {
+        if (setToDestroy && !destroyed) {
+            screen.getWorld().destroyBody(body);
+            destroyed = true;
+        }
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
     }
 
     public void onMeteorHit() {
+        setToDestroy = true;
         screen.removeBullet(this);
     }
 

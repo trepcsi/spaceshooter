@@ -1,4 +1,4 @@
-package com.trepcsi.game.sprites;
+package com.trepcsi.game.sprites.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
