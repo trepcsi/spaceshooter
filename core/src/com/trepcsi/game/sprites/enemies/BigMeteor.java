@@ -38,7 +38,7 @@ public class BigMeteor extends Meteor {
 
     @Override
     public void onBulletHit() {
-        screen.addExplosion(this.position);
+        screen.addExplosion(new Vector2(getX()+getWidth()/2, getY()+getWidth()/2));
         setToDestroy = true;
     }
 }

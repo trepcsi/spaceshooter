@@ -89,11 +89,10 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        box2DDebugRenderer.render(world, camera.combined);
+        //box2DDebugRenderer.render(world, camera.combined);
     }
 
     private void update(float dt) {
-        System.out.println(world.getBodyCount());
         handleInput(dt);
 
         world.step(1 / 60f, 6, 2); //read more
@@ -135,6 +134,22 @@ public class PlayScreen implements Screen {
 
     public World getWorld() {
         return world;
+    }
+
+    public void explode(Vector2 position) {
+        meteors.add(new SmallMeteor(this,
+                new Vector2(position.x, position.y),
+                new Vector2(.7f, .7f)));
+        meteors.add(new SmallMeteor(this,
+                new Vector2(position.x, position.y),
+                new Vector2(.7f, -.7f)));
+        meteors.add(new SmallMeteor(this,
+                new Vector2(position.x, position.y),
+                new Vector2(-1f, 0)));
+    }
+
+    public void addExplosion(Vector2 position) {
+        explosions.add(position);
     }
 
     private void generateMeteors() {
@@ -187,15 +202,5 @@ public class PlayScreen implements Screen {
 
     public AssetManager getAssetManager() {
         return this.game.manager;
-    }
-
-    public void explode(Vector2 position) {
-        meteors.add(new SmallMeteor(this,
-                new Vector2(position.x, position.y),
-                new Vector2(.7f, -.7f)));
-    }
-
-    public void addExplosion(Vector2 position) {
-        explosions.add(position);
     }
 }
