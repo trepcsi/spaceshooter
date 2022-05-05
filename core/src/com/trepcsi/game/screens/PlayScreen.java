@@ -28,54 +28,53 @@ import java.util.List;
 
 public class PlayScreen implements Screen {
 
-    private SpaceShooter game;
+    private final SpaceShooter game;
+    private final SpaceShip player;
+    private final List<Meteor> meteors;
+    private final List<Bullet> bullets;
+    private final List<Vector2> explosionPoints;
+    private final List<Vector2> explosionPointsToDelete;
 
-    private SpaceShip player;
-    private List<Meteor> meteors;
-    private List<Bullet> bullets;
-    private List<Vector2> explosions;
-    private List<Vector2> toDeleteExplosions;
+    private final OrthographicCamera camera;
+    private final Viewport viewport;
+    private final Hud hud;
+    private final Texture background;
 
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private Hud hud;
+    private final World world;
+    private final Box2DDebugRenderer box2DDebugRenderer;
 
-    private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
-
-    private Texture background;
 
     public PlayScreen(SpaceShooter game) {
         this.game = game;
+
         camera = new OrthographicCamera();
         viewport = new FitViewport(SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM, camera);
-        hud = Hud.getInstance(game.batch);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+
         background = new Texture("big_background.jpg");
+        hud = Hud.getInstance(game.batch);
 
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(new WorldContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-
         player = new SpaceShip(this);
-
         meteors = new ArrayList<>();
-        generateMeteors();
-
         bullets = new ArrayList<>();
-        explosions = new ArrayList<>();
-        toDeleteExplosions = new ArrayList<>();
+        explosionPoints = new ArrayList<>();
+        explosionPointsToDelete = new ArrayList<>();
+
+        generateMeteors();
         generateWalls();
     }
 
     @Override
     public void render(float delta) {
         update(delta);
-        Gdx.gl.glClearColor((float) 45 / 255, (float) 45 / 255, (float) 180 / 255, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
+
         game.batch.begin();
         game.batch.draw(background, 0, 0, SpaceShooter.V_WIDTH / SpaceShooter.PPM, SpaceShooter.V_HEIGHT / SpaceShooter.PPM);
         player.draw(game.batch);
@@ -95,7 +94,7 @@ public class PlayScreen implements Screen {
     private void update(float dt) {
         handleInput(dt);
 
-        world.step(1 / 60f, 6, 2); //read more
+        world.step(1 / 60f, 6, 2);
 
         player.update(dt);
         for (Meteor m : meteors) {
@@ -104,14 +103,13 @@ public class PlayScreen implements Screen {
         for (Bullet b : bullets) {
             b.update(dt);
         }
-        for (Vector2 explosion : explosions) {
+        for (Vector2 explosion : explosionPoints) {    //do explosions
             explode(explosion);
-            toDeleteExplosions.add(explosion);
+            explosionPointsToDelete.add(explosion);
         }
-        for(Vector2 delete : toDeleteExplosions){
-            explosions.remove(delete);
+        for (Vector2 delete : explosionPointsToDelete) {    //delete done explosions
+            explosionPoints.remove(delete);
         }
-
         hud.update(dt);
     }
 
@@ -128,12 +126,8 @@ public class PlayScreen implements Screen {
             player.turn(false);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            player.shoot(bullets);
+            player.shoot(bullets);    //maybe Player::shoot calls here an addBullet() method?
         }
-    }
-
-    public World getWorld() {
-        return world;
     }
 
     public void explode(Vector2 position) {
@@ -149,7 +143,7 @@ public class PlayScreen implements Screen {
     }
 
     public void addExplosion(Vector2 position) {
-        explosions.add(position);
+        explosionPoints.add(position);
     }
 
     private void generateMeteors() {
@@ -168,29 +162,12 @@ public class PlayScreen implements Screen {
         new Wall(this, WallType.BOTTOM);
     }
 
-    @Override
-    public void show() {
-
+    public World getWorld() {
+        return world;
     }
 
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
+    public AssetManager getAssetManager() {
+        return this.game.manager;
     }
 
     @Override
@@ -200,7 +177,24 @@ public class PlayScreen implements Screen {
         hud.dispose();
     }
 
-    public AssetManager getAssetManager() {
-        return this.game.manager;
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+    }
+
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
     }
 }
