@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.*;
 import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
 import com.trepcsi.game.sprites.walls.Wall;
@@ -15,26 +15,50 @@ import static java.lang.Math.sqrt;
 
 public abstract class Meteor extends Sprite {
 
-    protected Body body;
     protected PlayScreen screen;
 
+    protected Body body;
     protected Vector2 position;
     protected Vector2 velocity;
+    protected float radius;
 
     protected boolean setToDestroy;
     protected boolean destroyed;
 
-    protected Meteor(PlayScreen screen, Vector2 position, Vector2 velocity, String picturePath) {
-        super(new Texture(picturePath));
+    protected Meteor(PlayScreen screen, Vector2 position, Vector2 velocity, float radius, String texturePath) {
+        super(new Texture(texturePath));
         this.screen = screen;
         this.position = position;
         this.velocity = velocity;
         this.destroyed = false;
         this.setToDestroy = false;
+        this.radius = radius;
         defineMeteor();
+        setBounds(getX(), getY(), radius * 2, radius * 2);
     }
 
-    public abstract void defineMeteor();
+    public abstract void onBulletHit();
+
+    public void defineMeteor() {
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(position);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+
+        body = screen.getWorld().createBody(bdef);
+        MassData massData = new MassData();
+        massData.mass = 100000.f;
+        body.setMassData(massData);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(radius);
+        fdef.shape = shape;
+        fdef.filter.categoryBits = SpaceShooter.METEOR_BIT;
+        fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT | SpaceShooter.WALL_BIT;
+        body.createFixture(fdef).setUserData(this);
+
+        body.setLinearVelocity(velocity);
+    }
 
     public void update(float dt) {
         if (setToDestroy && !destroyed) {
@@ -68,6 +92,4 @@ public abstract class Meteor extends Sprite {
             super.draw(batch);
         }
     }
-
-    public abstract void onBulletHit();
 }

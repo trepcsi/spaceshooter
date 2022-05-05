@@ -16,18 +16,21 @@ import static com.badlogic.gdx.math.MathUtils.sin;
 
 public class Bullet extends Sprite {
 
-    private PlayScreen screen;
+    private final PlayScreen screen;
+    private final SpaceShip player;
+
     private Body body;
 
     private boolean setToDestroy;
     private boolean destroyed;
 
-    public Bullet(PlayScreen screen, Vector2 position, Vector2 velocity, boolean isLeft) {
+    public Bullet(PlayScreen screen, SpaceShip player, Vector2 position, Vector2 velocity, boolean isLeft) {
         super(new Texture("laserBlue02.png"));
         setBounds(getX(), getY(), 6 / SpaceShooter.PPM, 6 / SpaceShooter.PPM);
         this.screen = screen;
         this.destroyed = false;
         this.setToDestroy = false;
+        this.player = player;
         defineBullet(position, velocity, isLeft);
     }
 
@@ -36,7 +39,7 @@ public class Bullet extends Sprite {
 
         BodyDef bdef = new BodyDef();
 
-        float r = 40 / SpaceShooter.PPM;
+        float r = player.getRadius();
         float alpha = velocity.angleRad();
         if (isLeft) {
             bdef.position.set(position.x + r * (cos(alpha) + sin(alpha)), position.y + r * (sin(alpha) - cos(alpha)));

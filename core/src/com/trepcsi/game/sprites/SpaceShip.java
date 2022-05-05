@@ -22,8 +22,8 @@ public class SpaceShip extends Sprite {
     private final float POSITION_Y = (float) SpaceShooter.V_HEIGHT / 5 / SpaceShooter.PPM;
     private final float R = 40 / SpaceShooter.PPM;
 
-    private PlayScreen screen;
-    private AssetManager manager;
+    private final PlayScreen screen;
+    private final AssetManager manager;
 
     //Box2d variables
     private World world;
@@ -109,8 +109,8 @@ public class SpaceShip extends Sprite {
         float velocity_y = MathUtils.sin(alpha);
         Vector2 velocity = new Vector2(velocity_x, velocity_y);
 
-        bulletList.add(new Bullet(screen, body.getPosition(), velocity, true));
-        bulletList.add(new Bullet(screen, body.getPosition(), velocity, false));
+        bulletList.add(new Bullet(screen, this, body.getPosition(), velocity, true));
+        bulletList.add(new Bullet(screen, this, body.getPosition(), velocity, false));
         manager.get("sounds/sfx_laser2.ogg", Sound.class).play(1.5f);
     }
 
@@ -126,5 +126,9 @@ public class SpaceShip extends Sprite {
 
     public void colide() {
         Gdx.app.log("player", "collision");
+    }
+
+    public float getRadius() {
+        return R;
     }
 }

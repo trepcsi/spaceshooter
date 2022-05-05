@@ -14,14 +14,14 @@ import com.trepcsi.game.SpaceShooter;
 
 public class Hud implements Disposable {
 
-    private static Hud single_instance = null;
-
-    private Integer timer;
-    private Label timeLabel;
-    private float timeCount;
+    private static Hud single_instance = null;    //singleton class
 
     public Stage stage;
-    private Viewport viewport;
+
+    private Integer timer;
+    private final Label timeLabel;
+    private float timeCount;
+
 
     public static Hud getInstance(SpriteBatch sb) {
         if (single_instance == null) {
@@ -31,10 +31,10 @@ public class Hud implements Disposable {
     }
 
     private Hud(SpriteBatch sb) {
-        viewport = new FitViewport(SpaceShooter.V_WIDTH, SpaceShooter.V_HEIGHT, new OrthographicCamera());
+        Viewport viewport = new FitViewport(SpaceShooter.V_WIDTH, SpaceShooter.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
-        timer = 1;
+        timer = 0;
         timeLabel = new Label(String.format("%03d", timer), new Label.LabelStyle(new BitmapFont(), Color.CORAL));
 
         createTable();

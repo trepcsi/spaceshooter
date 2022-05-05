@@ -8,10 +8,8 @@ import com.trepcsi.game.screens.PlayScreen;
 
 public class Wall extends Sprite {
 
-    private World world;
-    private Body body;
-
-    private WallType type;
+    private final World world;
+    private final WallType type;
 
     public Wall(PlayScreen screen, WallType type) {
         this.world = screen.getWorld();
@@ -44,7 +42,7 @@ public class Wall extends Sprite {
                 shape.setAsBox((float) SpaceShooter.V_WIDTH / 2 / SpaceShooter.PPM, 0.01f);
                 break;
         }
-        body = world.createBody(bdef);
+        Body body = world.createBody(bdef);
         fdef.shape = shape;
         fdef.filter.categoryBits = SpaceShooter.WALL_BIT;
         fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT | SpaceShooter.METEOR_BIT;
