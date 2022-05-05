@@ -16,8 +16,9 @@ import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.scenes.Hud;
 import com.trepcsi.game.sprites.Bullet;
 import com.trepcsi.game.sprites.SpaceShip;
+import com.trepcsi.game.sprites.enemies.BigMeteor;
 import com.trepcsi.game.sprites.enemies.Meteor;
-import com.trepcsi.game.sprites.enemies.MeteorType;
+import com.trepcsi.game.sprites.enemies.SmallMeteor;
 import com.trepcsi.game.sprites.walls.Wall;
 import com.trepcsi.game.sprites.walls.WallType;
 import com.trepcsi.game.tools.WorldContactListener;
@@ -32,6 +33,8 @@ public class PlayScreen implements Screen {
     private SpaceShip player;
     private List<Meteor> meteors;
     private List<Bullet> bullets;
+    private List<Vector2> explosions;
+    private List<Vector2> toDeleteExplosions;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -56,10 +59,14 @@ public class PlayScreen implements Screen {
 
 
         player = new SpaceShip(this);
+
         meteors = new ArrayList<>();
-        bullets = new ArrayList<>();
-        generateWalls();
         generateMeteors();
+
+        bullets = new ArrayList<>();
+        explosions = new ArrayList<>();
+        toDeleteExplosions = new ArrayList<>();
+        generateWalls();
     }
 
     @Override
@@ -82,11 +89,10 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        box2DDebugRenderer.render(world, camera.combined);
+        //box2DDebugRenderer.render(world, camera.combined);
     }
 
     private void update(float dt) {
-        System.out.println(world.getBodyCount());
         handleInput(dt);
 
         world.step(1 / 60f, 6, 2); //read more
@@ -97,6 +103,13 @@ public class PlayScreen implements Screen {
         }
         for (Bullet b : bullets) {
             b.update(dt);
+        }
+        for (Vector2 explosion : explosions) {
+            explode(explosion);
+            toDeleteExplosions.add(explosion);
+        }
+        for (Vector2 d : toDeleteExplosions) {
+            explosions.remove(d);
         }
 
         hud.update(dt);
@@ -123,15 +136,29 @@ public class PlayScreen implements Screen {
         return world;
     }
 
+    public void explode(Vector2 position) {
+        meteors.add(new SmallMeteor(this,
+                new Vector2(position.x, position.y),
+                new Vector2(.7f, .7f)));
+        meteors.add(new SmallMeteor(this,
+                new Vector2(position.x, position.y),
+                new Vector2(.7f, -.7f)));
+        meteors.add(new SmallMeteor(this,
+                new Vector2(position.x, position.y),
+                new Vector2(-1f, 0)));
+    }
+
+    public void addExplosion(Vector2 position) {
+        explosions.add(position);
+    }
+
     private void generateMeteors() {
-        meteors.add(new Meteor(this,
+        meteors.add(new BigMeteor(this,
                 new Vector2((SpaceShooter.V_WIDTH - 100) / SpaceShooter.PPM, (SpaceShooter.V_HEIGHT - 100) / SpaceShooter.PPM),
-                new Vector2(-1.f, 0),
-                MeteorType.LARGE));
-        meteors.add(new Meteor(this,
+                new Vector2(-1.f, 0)));
+        meteors.add(new BigMeteor(this,
                 new Vector2(100 / SpaceShooter.PPM, 100 / SpaceShooter.PPM),
-                new Vector2(.7f, .7f),
-                MeteorType.LARGE));
+                new Vector2(.7f, .7f)));
     }
 
     private void generateWalls() {
