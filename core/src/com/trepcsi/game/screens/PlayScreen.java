@@ -108,8 +108,8 @@ public class PlayScreen implements Screen {
             explode(explosion);
             toDeleteExplosions.add(explosion);
         }
-        for (Vector2 d : toDeleteExplosions) {
-            explosions.remove(d);
+        for(Vector2 delete : toDeleteExplosions){
+            explosions.remove(delete);
         }
 
         hud.update(dt);

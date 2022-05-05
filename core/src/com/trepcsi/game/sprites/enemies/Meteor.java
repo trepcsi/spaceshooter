@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.trepcsi.game.SpaceShooter;
 import com.trepcsi.game.screens.PlayScreen;
 import com.trepcsi.game.sprites.walls.Wall;
 import com.trepcsi.game.sprites.walls.WallType;
@@ -25,7 +26,6 @@ public abstract class Meteor extends Sprite {
 
     protected Meteor(PlayScreen screen, Vector2 position, Vector2 velocity, String picturePath) {
         super(new Texture(picturePath));
-
         this.screen = screen;
         this.position = position;
         this.velocity = velocity;
