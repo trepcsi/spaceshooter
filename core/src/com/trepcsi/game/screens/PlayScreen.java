@@ -88,7 +88,7 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        //box2DDebugRenderer.render(world, camera.combined);
+        box2DDebugRenderer.render(world, camera.combined);
     }
 
     private void update(float dt) {
