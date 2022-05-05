@@ -20,12 +20,12 @@ public abstract class Meteor extends Sprite {
     protected Body body;
     protected Vector2 position;
     protected Vector2 velocity;
-    protected int radius;
+    protected float radius;
 
     protected boolean setToDestroy;
     protected boolean destroyed;
 
-    protected Meteor(PlayScreen screen, Vector2 position, Vector2 velocity, int radius, String texturePath) {
+    protected Meteor(PlayScreen screen, Vector2 position, Vector2 velocity, float radius, String texturePath) {
         super(new Texture(texturePath));
         this.screen = screen;
         this.position = position;
@@ -34,7 +34,7 @@ public abstract class Meteor extends Sprite {
         this.setToDestroy = false;
         this.radius = radius;
         defineMeteor();
-        setBounds(getX(), getY(), radius * 2 / SpaceShooter.PPM, radius * 2 / SpaceShooter.PPM);
+        setBounds(getX(), getY(), radius * 2, radius * 2);
     }
 
     public abstract void onBulletHit();
@@ -51,7 +51,7 @@ public abstract class Meteor extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(radius / SpaceShooter.PPM);
+        shape.setRadius(radius);
         fdef.shape = shape;
         fdef.filter.categoryBits = SpaceShooter.METEOR_BIT;
         fdef.filter.maskBits = SpaceShooter.PLAYER_BIT | SpaceShooter.BULLET_BIT | SpaceShooter.WALL_BIT;
