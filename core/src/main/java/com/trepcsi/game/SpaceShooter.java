@@ -1,10 +1,11 @@
-package com.trepcsi.game;
+package main.java.com.trepcsi.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.trepcsi.game.screens.PlayScreen;
+import main.java.com.trepcsi.game.screens.PlayScreen;
+
 
 public class SpaceShooter extends Game {
     public static final int V_WIDTH = 800;

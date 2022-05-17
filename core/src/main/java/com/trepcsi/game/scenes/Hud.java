@@ -1,4 +1,4 @@
-package com.trepcsi.game.scenes;
+package main.java.com.trepcsi.game.scenes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.SpaceShooter;
 
 public class Hud implements Disposable {
 

@@ -1,4 +1,4 @@
-package com.trepcsi.game.screens;
+package main.java.com.trepcsi.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,16 +12,16 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.trepcsi.game.SpaceShooter;
-import com.trepcsi.game.scenes.Hud;
-import com.trepcsi.game.sprites.Bullet;
-import com.trepcsi.game.sprites.SpaceShip;
-import com.trepcsi.game.sprites.enemies.BigMeteor;
-import com.trepcsi.game.sprites.enemies.Meteor;
-import com.trepcsi.game.sprites.enemies.SmallMeteor;
-import com.trepcsi.game.sprites.walls.Wall;
-import com.trepcsi.game.sprites.walls.WallType;
-import com.trepcsi.game.tools.WorldContactListener;
+import main.java.com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.scenes.Hud;
+import main.java.com.trepcsi.game.sprites.Bullet;
+import main.java.com.trepcsi.game.sprites.SpaceShip;
+import main.java.com.trepcsi.game.sprites.enemies.BigMeteor;
+import main.java.com.trepcsi.game.sprites.enemies.Meteor;
+import main.java.com.trepcsi.game.sprites.enemies.SmallMeteor;
+import main.java.com.trepcsi.game.sprites.walls.Wall;
+import main.java.com.trepcsi.game.sprites.walls.WallType;
+import main.java.com.trepcsi.game.tools.WorldContactListener;
 
 import java.util.ArrayList;
 import java.util.List;

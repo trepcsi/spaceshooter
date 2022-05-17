@@ -1,4 +1,4 @@
-package com.trepcsi.game.sprites;
+package main.java.com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,8 +8,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.trepcsi.game.SpaceShooter;
-import com.trepcsi.game.screens.PlayScreen;
+import main.java.com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.screens.PlayScreen;
+
 
 import static com.badlogic.gdx.math.MathUtils.cos;
 import static com.badlogic.gdx.math.MathUtils.sin;

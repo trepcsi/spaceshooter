@@ -1,4 +1,4 @@
-package com.trepcsi.game.sprites;
+package main.java.com.trepcsi.game.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.trepcsi.game.SpaceShooter;
-import com.trepcsi.game.screens.PlayScreen;
+import main.java.com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.screens.PlayScreen;
 
 import java.util.List;
 

@@ -1,11 +1,12 @@
-package com.trepcsi.game.tools;
+package main.java.com.trepcsi.game.tools;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.trepcsi.game.SpaceShooter;
-import com.trepcsi.game.sprites.Bullet;
-import com.trepcsi.game.sprites.SpaceShip;
-import com.trepcsi.game.sprites.enemies.Meteor;
-import com.trepcsi.game.sprites.walls.Wall;
+import main.java.com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.sprites.Bullet;
+import main.java.com.trepcsi.game.sprites.SpaceShip;
+import main.java.com.trepcsi.game.sprites.enemies.Meteor;
+import main.java.com.trepcsi.game.sprites.walls.Wall;
+
 
 public class WorldContactListener implements ContactListener {
     @Override

@@ -1,4 +1,4 @@
-package com.trepcsi.game.sprites.enemies;
+package main.java.com.trepcsi.game.sprites.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.trepcsi.game.SpaceShooter;
-import com.trepcsi.game.screens.PlayScreen;
-import com.trepcsi.game.sprites.walls.Wall;
-import com.trepcsi.game.sprites.walls.WallType;
+import main.java.com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.screens.PlayScreen;
+import main.java.com.trepcsi.game.sprites.walls.Wall;
+import main.java.com.trepcsi.game.sprites.walls.WallType;
 
 import static java.lang.Math.sqrt;
 
