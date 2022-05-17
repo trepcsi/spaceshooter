@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.java.com.trepcsi.game.SpaceShooter;
+import main.java.com.trepcsi.game.helper.RandomDirectionHelper;
 import main.java.com.trepcsi.game.scenes.Hud;
 import main.java.com.trepcsi.game.sprites.Bullet;
 import main.java.com.trepcsi.game.sprites.SpaceShip;
@@ -131,15 +132,13 @@ public class PlayScreen implements Screen {
     }
 
     public void explode(Vector2 position) {
-        meteors.add(new SmallMeteor(this,
-                new Vector2(position.x, position.y),
-                new Vector2(.7f, .7f)));
-        meteors.add(new SmallMeteor(this,
-                new Vector2(position.x, position.y),
-                new Vector2(.7f, -.7f)));
-        meteors.add(new SmallMeteor(this,
-                new Vector2(position.x, position.y),
-                new Vector2(-1f, 0)));
+        RandomDirectionHelper rdh = new RandomDirectionHelper();
+        List<Vector2> smallMeteorDirections = rdh.generateRandomDirections(3);
+        for(int i = 0; i < 3; i++){
+            meteors.add(new SmallMeteor(this,
+                    new Vector2(position.x, position.y),
+                    new Vector2(smallMeteorDirections.get(i).x, smallMeteorDirections.get(i).y)));
+        }
     }
 
     public void addExplosion(Vector2 position) {

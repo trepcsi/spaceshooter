@@ -17,8 +17,9 @@ public class RandomDirectionHelper {
 
         Random random = new Random();
         for (int i = 0; i < directionCount; i++) {
-            float x = (float) random.nextDouble();
+            float x = (float) (-1 + random.nextDouble() * 2);
             float y = (float) Math.sqrt(1 - x * x);
+            if (random.nextInt(2) == 0) y = -y;
             result.add(new Vector2(x, y));
         }
         return result;
